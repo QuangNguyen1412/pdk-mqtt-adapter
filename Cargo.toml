@@ -1,0 +1,20 @@
+[package]
+name = "rust-mqtt-adapter"
+version = "0.1.0"
+edition = "2021"
+description = "Bridge MQTT commands to TCP sockets of mDNS-discovered _pdk-board._tcp devices"
+
+[dependencies]
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "net", "io-util", "sync", "time"] }
+rumqttc = "0.24"
+mdns-sd = "0.11"
+if-addrs = "0.13"
+serde = { version = "1", features = ["derive"] }
+serde_yaml = "0.9"
+anyhow = "1"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+[[bin]]
+name = "rust-mqtt-adapter"
+path = "src/main.rs"

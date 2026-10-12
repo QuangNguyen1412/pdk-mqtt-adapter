@@ -1,0 +1,30 @@
+# MQTT broker connection and topic layout.
+mqtt:
+  host: localhost
+  port: 18883
+  client_id: rust-mqtt-adapter
+  username: test
+  password: 1234
+  keep_alive_secs: 30
+  # Root of the per-device topic tree. Topics are:
+  #   <topic_prefix>/<mac>/cmd     (subscribe)  MQTT -> device socket
+  #   <topic_prefix>/<mac>/resp    (publish)    device socket -> MQTT
+  #   <topic_prefix>/<mac>/status  (publish)    online/offline, retained
+  topic_prefix: pdk-board
+
+# mDNS discovery of _pdk-board._tcp boards.
+discovery:
+  service_type: _pdk-board._tcp.local.
+  # The device MAC is extracted from the mDNS hostname, e.g.
+  #   pdk-board[5c:85:7e:60:05:90].local.  ->  5c-85-7e-60-05-90
+
+# Device TCP socket behavior.
+socket:
+  # Terminator appended to each command before writing to the socket.
+  # Escapes are interpreted: "\n" (LF, default), "\r\n" (CRLF), "" (none).
+  command_terminator: "\r\n"
+  # Delimiter used to split messages read back from the socket; each frame is
+  # published as one MQTT response. Escapes interpreted. "\n" (default) also
+  # strips a trailing "\r" (CRLF-friendly). "" disables framing (publish each
+  # raw read chunk).
+  response_delimiter: "\r"
